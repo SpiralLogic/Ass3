@@ -51,9 +51,23 @@ if [ -f ${METADATA} ]; then
     mv ${METADATA} $TMPDIR/
 fi
 
+function restore_metadata() {
+    # Replaces existing metadata file if needed
+    if [ -d $TMPDIR ]; then
+        cp ${TMPDIR}/${METADATA} ./
+        rm -rf $TMPDIR
+    fi
+}
+
 # Decompress the file
 echo "Decompressing ${FILENAME}"
 tar ${DECOMPRESS_SWITCH} -xvf ${FILE}
+
+if [ $? -ne 0 ]; then
+    echo "Decompress failed"
+    restore_metadata
+fi
+
 
 if [ -f ${METADATA} ]; then
     # Restore duplicates based on option provided
@@ -75,8 +89,4 @@ else
     echo "No metadata for duplicates in archive"
 fi
 
-# Replace existing metadata file if needed
-if [ -d $TMPDIR ]; then
-    cp ${TMPDIR}/${METADATA} ./
-    rm -rf $TMPDIR
-fi
+restore_metadata

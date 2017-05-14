@@ -74,8 +74,17 @@ rm ./dupRemove.pl
 
 # Place compressed file one directory up so that it isn't included in the archive
 tar ${COMPRESS_SWITCH} -cf ../${OUTFILE}${EXTENSION} .
-cd ${CURRDIR}
 
-# Move the compressed file into the current directory and clean up
-mv ${TMPDIR}/../${OUTFILE}${EXTENSION} .
+# Make sure compression succeeded
+if [ $? -ne 0 ]; then
+    echo "Compress failed"
+else
+    cd ${CURRDIR}
+
+    # Move the compressed file into the current directory and clean up
+    mv ${TMPDIR}/../${OUTFILE}${EXTENSION} .
+fi
+
+# Clean up
 rm -rf /tmp/$$
+

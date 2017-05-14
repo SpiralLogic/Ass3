@@ -4,12 +4,16 @@
 # Removes all of the duplicates in a given directory and creates a metadata.txt which contains the copy that remains
 # and the locations of the duplciate
 #
+# Requires: Digest::MD5::File
+# installation by: cpan install Digest::MD5::File
+#
 # This is achieved in the following way
 # 1. Recursive search given folder
-# 2. Create an md5 of the file contents and check if it has seen before, if it has then it is a duplciate
+# 2. Create an md5 of the file contents and check if it has seen before, if it has then it is a duplciate (2^−128 probability of collision
 # 3. Add the orginal and duplicate locations to metadata file
 # 4. Remove duplicate files
 #
+
 use strict;
 use warnings FATAL => 'all';
 use File::Find;
