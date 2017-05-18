@@ -25,6 +25,7 @@ my $metadata_file = "metadata.txt";
 # my $file;
 # my $md5_key;
 my $directory = $ARGV[0];
+$directory =~ s/\/+$//;
 
 # Remove metadata file if it already exists
 unlink($metadata_file);
@@ -32,7 +33,7 @@ unlink($metadata_file);
 if(-e $metadata_file)
 {
     print "Could not remove metadata file!";
-    exit;
+    exit 1;
 }
 
 # Open metadata file for writing
@@ -46,7 +47,7 @@ finddepth({wanted => \&checkFile, no_chdir => 1}, $directory);
 #   print $md5_key . " " . $file . "\n";
 #}
 
-# Check if a file is already known
+# Check if a file and contents have already been found
 sub checkFile {
     my $filename = $_;
 

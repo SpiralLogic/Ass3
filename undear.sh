@@ -20,14 +20,14 @@ if [ "$#" != 2 ]; then
     echo "delete:    -d"
     echo "symlink:   -l"
     echo "restore:   -c"
-    exit
+    exit 1
 fi
 
 # Check correct switch is given
 if [ $1 != "-d" ] && [ $1 != "-l" ] && [ $1 != "-c" ]; then
     echo "Invalid restore option"
     echo "Options are -d or -l or -c"
-    exit
+    exit 1
 fi
 
 # Initial variables
@@ -39,7 +39,7 @@ TMPDIR=/tmp/$$                  # temporary directory
 
 if [ ! -f ${FILE} ]; then
     echo "File to undear is missing or not a file"
-    exit
+    exit 1
 fi
 
 # Determine compression type based on extension
@@ -53,11 +53,15 @@ elif [ ${TYPE} == "bz2" ]; then
     DECOMPRESS_SWITCH="-j"
 else
     echo "Unknown compression extension"
-    exit
+    exit 1
 fi
 
 # Temporary directory to copy metadata file if it already exists
 if [ -f ${METADATA} ]; then
+    if [ -d ${TMPDIR} ]; then
+        echo "Could not create temporary directory"
+        exit 1;
+    fi
     mkdir -p ${TMPDIR}
     mv ${METADATA} $TMPDIR/
 fi
