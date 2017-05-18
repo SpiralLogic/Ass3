@@ -3,14 +3,16 @@
 #
 # Uncompresses a deared archive into it's original directories and restores duplicates based on the switch provided
 
+# Replaces existing metadata file if needed
 function restore_metadata() {
-    # Replaces existing metadata file if needed
     if [ -d $TMPDIR ]; then
         cp ${TMPDIR}/${METADATA} ./
         rm -rf $TMPDIR
     fi
 }
 
+
+# Exist if not enough paramters are given
 if [ "$#" != 2 ]; then
     echo "Usage:"
     echo "./undear.sh -[duplication option] file"
@@ -21,6 +23,7 @@ if [ "$#" != 2 ]; then
     exit
 fi
 
+# Check correct switch is given
 if [ $1 != "-d" ] && [ $1 != "-l" ] && [ $1 != "-c" ]; then
     echo "Invalid restore option"
     echo "Options are -d or -l or -c"
@@ -29,10 +32,10 @@ fi
 
 # Initial variables
 FILE=$2
-FILENAME=$(basename "$FILE")
-TYPE="${2##*.}" # Get file extension
-METADATA="metadata.txt"
-TMPDIR=/tmp/$$
+FILENAME=$(basename "$FILE")    # Filename of archive without directory
+TYPE="${2##*.}"                 # Get extension
+METADATA="metadata.txt"         # metadata filename
+TMPDIR=/tmp/$$                  # temporary directory
 
 if [ ! -f ${FILE} ]; then
     echo "File to undear is missing or not a file"

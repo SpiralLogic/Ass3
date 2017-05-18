@@ -27,7 +27,7 @@ my $metadata_file = "metadata.txt";
 my $directory = $ARGV[0];
 
 # Remove metadata file if it already exists
-unlink $metadata_file;
+unlink($metadata_file);
 
 if(-e $metadata_file)
 {
@@ -49,8 +49,6 @@ finddepth({wanted => \&checkFile, no_chdir => 1}, $directory);
 # Check if a file is already known
 sub checkFile {
     my $filename = $_;
-    my $filesize = -s $filename;
-    my $sizeExists = 0;
 
     # Skip directories
     if (-d $filename) {

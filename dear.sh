@@ -21,13 +21,13 @@ fi
 
 if [ "$#" == 2 ]; then
     # if no switch is given use default extension
-    OUTFILE=$(basename "$1")
-    OUTDIR=$(dirname "$1")/
-    INDIR=$2
-    BASEDIR=$(basename $2) # get base directory
-    COMPRESS_SWITCH=""
-    EXTENSION=".tar"
-    COMPRESS_TYPE="tar"
+    OUTFILE=$(basename "$1")    # output file name
+    OUTDIR=$(dirname "$1")/     # output file directory
+    INDIR=$2                    # input directory
+    BASEDIR=$(basename $2)      # get base directory
+    COMPRESS_SWITCH=""          # compression option
+    EXTENSION=".tar"            # extension of the compressed file
+    COMPRESS_TYPE="tar"         # Compression Type
 else
     # switch is given, determine the correct extension and compression method
     OUTFILE=$(basename "$2")
@@ -92,6 +92,11 @@ mkdir -p ${TMPDIR}
 # Copy folder into tmp directory for removing duplicates and archiving
 cp -rf ${INDIR} ${TMPDIR}
 
+if [ $? -ne 0 ]; then
+    echo "Couldn't copy files to temporary directory"
+    clean_up
+    exit
+fi
 # Copy duplicate find script, this is so that directory paths can remain relative
 cp ./dupRemove.pl ${TMPDIR}
 
