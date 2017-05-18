@@ -76,6 +76,9 @@ else
     fi
 fi
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Check for errors based on that input
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 if [ ${#OUTDIR} -eq 0 ]; then
     OUTDIR=.
     echo "outdir set ."
@@ -98,8 +101,10 @@ if [ -f ${OUTDIR}${OUTFILE}${EXTENSION} ]; then
     exit 1
 fi
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Set up temp directory, Is 2 directories deep so there are no collisions when moving compressed file
 # into the directory below it
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 TMPDIR=/tmp/$$/$$
 CURRDIR=`pwd`
 
@@ -110,6 +115,11 @@ fi
 
 mkdir -p ${TMPDIR}
 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Real work starts here.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 # Copy folder into tmp directory for removing duplicates and archiving
 cp -rf ${INDIR} ${TMPDIR}
 
@@ -118,6 +128,7 @@ if [ $? -ne 0 ]; then
     clean_up
     exit 1
 fi
+
 # Copy duplicate find script, this is so that directory paths can remain relative
 cp ./dupRemove.pl ${TMPDIR}
 
@@ -151,6 +162,6 @@ fi
 # Clean up
 clean_up
 
-echo "Successfully created deduplicated archive ${OUTDIR}${OUTFILE}${EXTENSION}"
+echo "Successfully created de-duplicated archive ${OUTDIR}${OUTFILE}${EXTENSION}"
 echo "Compressed with: ${COMPRESS_TYPE}"
 

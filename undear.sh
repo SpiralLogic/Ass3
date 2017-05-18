@@ -66,7 +66,10 @@ if [ -f ${METADATA} ]; then
     mv ${METADATA} $TMPDIR/
 fi
 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Decompress the file
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 echo "Decompressing ${FILENAME}"
 tar ${DECOMPRESS_SWITCH} -xvf ${FILE}
 
@@ -74,6 +77,11 @@ if [ $? -ne 0 ]; then
     echo "Decompress failed"
     restore_metadata
 fi
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Restore duplicates based on the switch provided
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # if the metadata existed in the archive
 if [ -f ${METADATA} ]; then
