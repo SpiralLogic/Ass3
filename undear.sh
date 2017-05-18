@@ -3,6 +3,14 @@
 #
 # Uncompresses a deared archive into it's original directories and restores duplicates based on the switch provided
 
+function restore_metadata() {
+    # Replaces existing metadata file if needed
+    if [ -d $TMPDIR ]; then
+        cp ${TMPDIR}/${METADATA} ./
+        rm -rf $TMPDIR
+    fi
+}
+
 if [ "$#" != 2 ]; then
     echo "Usage:"
     echo "./undear.sh -[duplication option] file"
@@ -51,14 +59,6 @@ if [ -f ${METADATA} ]; then
     mv ${METADATA} $TMPDIR/
 fi
 
-function restore_metadata() {
-    # Replaces existing metadata file if needed
-    if [ -d $TMPDIR ]; then
-        cp ${TMPDIR}/${METADATA} ./
-        rm -rf $TMPDIR
-    fi
-}
-
 # Decompress the file
 echo "Decompressing ${FILENAME}"
 tar ${DECOMPRESS_SWITCH} -xvf ${FILE}
@@ -68,7 +68,7 @@ if [ $? -ne 0 ]; then
     restore_metadata
 fi
 
-
+# if the metadata existed in the archive
 if [ -f ${METADATA} ]; then
     # Restore duplicates based on option provided
     if [ $1 == "-c" ]; then
