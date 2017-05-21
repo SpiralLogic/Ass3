@@ -8,18 +8,20 @@ function clean_up() {
     rm -rf /tmp/$$
 }
 
+# Display correct usage
 function usage() {
     echo "Usage:"
-    echo "./dear.sh -[compression] outfile indir"
+    echo "./dear.sh [compression] outfile indir"
     echo "Compression options:"
     echo "compress:  -c "
     echo "bzip:      -b "
     echo "gzip:      -g "
     exit 1
 }
+
 # Show an error message if an unsupported number of commands is given
 if [ "$#" != 3 ] && [ "$#" != 2 ]; then
-    usage;
+    usage
 fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -35,6 +37,7 @@ if [ "$#" == 2 ]; then
     INDIR=${2%/}                     # input directory
 
     BASEDIR=$(basename $2)          # get base directory
+
     if [ $? -ne 0 ]; then usage; fi # Check to make sure success
 
     COMPRESS_SWITCH=""              # compression option
@@ -46,9 +49,10 @@ else
     if [ $? -ne 0 ]; then usage; fi # Check to make sure success
 
     OUTDIR=$(dirname "$2")/
-
     INDIR=${3%/}                    # input directory
+
     BASEDIR=$(basename $3)
+
     if [ $? -ne 0 ]; then usage; fi # Check to make sure success
 
     if [ $1 != "-c" ] && [ $1 != "-b" ] && [ $1 != "-g" ]; then
@@ -105,6 +109,9 @@ fi
 # Set up temp directory, Is 2 directories deep so there are no collisions when moving compressed file
 # into the directory below it
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+echo "De-duplicating ${INDIR}"
+
 TMPDIR=/tmp/$$/$$
 CURRDIR=`pwd`
 
@@ -139,10 +146,13 @@ cd ${TMPDIR}
 # Check to make deduplication succeeded
 if [ $? -ne 0 ]; then
     echo "Deduplication failed"
+    clean_up
     exit 1
 fi
 
 rm ./dupRemove.pl
+
+echo "Archiving ${INDIR}"
 
 # Place compressed file one directory up so that it isn't included in the archive
 tar ${COMPRESS_SWITCH} -cf ../${OUTFILE}${EXTENSION} .

@@ -11,15 +11,17 @@ function restore_metadata() {
     fi
 }
 
-
-# Exist if not enough paramters are given
-if [ "$#" != 2 ]; then
+function usage() {
     echo "Usage:"
     echo "./undear.sh -[duplication option] file"
     echo "duplicate options:"
     echo "delete:    -d"
     echo "symlink:   -l"
     echo "restore:   -c"
+}
+# Exist if not enough paramters are given
+if [ "$#" != 2 ]; then
+    usage
     exit 1
 fi
 
@@ -71,6 +73,7 @@ fi
 # Decompress the file
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 echo "Decompressing ${FILENAME}"
+
 tar ${DECOMPRESS_SWITCH} -xvf ${FILE}
 
 if [ $? -ne 0 ]; then
@@ -82,6 +85,8 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Restore duplicates based on the switch provided
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+echo "Processing duplicates"
 
 # if the metadata existed in the archive
 if [ -f ${METADATA} ]; then
