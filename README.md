@@ -54,7 +54,7 @@ Duplicate Handling options are<br>
 <code>-l</code> symbolically link the duplicate<br>
 <code>-d</code> remove any duplicate keeping only the first found original<br>
 
-# SUPPORTED FUNCTIONALITY:
+## SUPPORTED FUNCTIONALITY:
 Dear works in the following way
 1. A copy of the folder to archive is moved to a temporary directory (/tmp/) this is to avoid possible destruction of the original data
 2. All duplicates are removed and a metadata file created with information on where the original file is located where to restore duplciates
@@ -71,3 +71,8 @@ Dedupliation happens in the following way
 1. The input directory is traveresed 
 2. A MD5 hash is created for each file and stored in a Perl Hash table
 3. If the MD5 already existed, the file is removed and it's location and the original location stored in a metadata file 
+
+## Limitations:
+* There must be enough room on the disk to make a complete copy of the input folder and the archive
+* The output location of the archive can be within the input directory
+* The possibility of an MD5 clash can occur, but it is extremely low (unless specially crafted) this means a false duplicate may be detected
