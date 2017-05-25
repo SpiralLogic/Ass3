@@ -68,7 +68,7 @@ else
             COMPRESS_TYPE="bz2"
         elif [ $1 == "-c" ]; then
             COMPRESS_SWITCH=""
-            EXTENSION=".tar"
+            EXTENSION=".tar.Z"
             COMPRESS_TYPE="compress"
         elif [ $1 == "" ]; then
             COMPRESS_SWITCH=""
@@ -101,6 +101,11 @@ fi
 if [ -f ${OUTDIR}${OUTFILE}${EXTENSION} ]; then
     echo "File already exists ${OUTDIR}${OUTFILE}${EXTENSION}"
     exit 1
+fi
+
+# After file check set extension for compress to just tar
+if [ ${COMPRESS_TYPE} == "compress" ]; then
+    EXTENSION=".tar"
 fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
