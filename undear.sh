@@ -35,6 +35,8 @@ fi
 # Initial variables
 FILE=$2
 FILENAME=$(basename "$FILE")    # Filename of archive without directory
+if [ $? -ne 0 ]; then usage; fi # Check to make sure success
+
 TYPE="${2##*.}"                 # Get extension
 METADATA="metadata.txt"         # metadata filename
 TMPDIR=/tmp/$$                  # temporary directory
@@ -50,7 +52,7 @@ if [ ${TYPE} == "tar" ]; then
 elif [ ${TYPE} == "gz" ]; then
     DECOMPRESS_SWITCH="-z"
 elif [ ${TYPE} == "Z" ]; then
-    DECOMPRESS_SWITCH="-j"
+    DECOMPRESS_SWITCH="-Z"
 elif [ ${TYPE} == "bz2" ]; then
     DECOMPRESS_SWITCH="-j"
 else
@@ -74,11 +76,12 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 echo "Decompressing ${FILENAME}"
 
-tar ${DECOMPRESS_SWITCH} -xvf ${FILE}
+tar ${DECOMPRESS_SWITCH} -xf ${FILE}
 
 if [ $? -ne 0 ]; then
     echo "Decompress failed"
     restore_metadata
+    exit 1
 fi
 
 
@@ -113,3 +116,7 @@ else
 fi
 
 restore_metadata
+
+echo "Undear Complete!"
+
+exit 0

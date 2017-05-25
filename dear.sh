@@ -37,7 +37,6 @@ if [ "$#" == 2 ]; then
     INDIR=${2%/}                     # input directory
 
     BASEDIR=$(basename $2)          # get base directory
-
     if [ $? -ne 0 ]; then usage; fi # Check to make sure success
 
     COMPRESS_SWITCH=""              # compression option
@@ -52,7 +51,6 @@ else
     INDIR=${3%/}                    # input directory
 
     BASEDIR=$(basename $3)
-
     if [ $? -ne 0 ]; then usage; fi # Check to make sure success
 
     if [ $1 != "-c" ] && [ $1 != "-b" ] && [ $1 != "-g" ]; then
@@ -69,8 +67,8 @@ else
             EXTENSION=".tar.bz2"
             COMPRESS_TYPE="bz2"
         elif [ $1 == "-c" ]; then
-            COMPRESS_SWITCH="-Z"
-            EXTENSION=".tar.Z"
+            COMPRESS_SWITCH=""
+            EXTENSION=".tar"
             COMPRESS_TYPE="compress"
         elif [ $1 == "" ]; then
             COMPRESS_SWITCH=""
@@ -162,12 +160,25 @@ if [ $? -ne 0 ]; then
     echo "Creating tar failed"
     clean_up
     exit 1
-else
-    cd ${CURRDIR}
-
-    # Move the compressed file into the current directory and clean up
-    mv ${TMPDIR}/../${OUTFILE}${EXTENSION} ${OUTDIR}
 fi
+
+# Handle special case of compress so that compression can occur even it won't make the file any smaller
+if [ ${COMPRESS_TYPE} == "compress" ]; then
+    compress -f ../${OUTFILE}${EXTENSION}
+    EXTENSION=".tar.Z"
+
+    # Make sure compression succeeded
+    if [ $? -ne 0 ]; then
+        echo "Compressing with compress failed"
+        clean_up
+        exit 1
+    fi
+fi
+
+cd ${CURRDIR}
+
+# Move the compressed file into the current directory and clean up
+mv ${TMPDIR}/../${OUTFILE}${EXTENSION} ${OUTDIR}
 
 # Clean up
 clean_up
@@ -175,3 +186,4 @@ clean_up
 echo "Successfully created de-duplicated archive ${OUTDIR}${OUTFILE}${EXTENSION}"
 echo "Compressed with: ${COMPRESS_TYPE}"
 
+exit 0;
