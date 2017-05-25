@@ -74,6 +74,9 @@ Dedupliation happens in the following way
 
 ## Limitations:
 * Filename with spaces *will* work
+* Symbolic links will be deferenced as per -a switch of cp
+* dear must be executed from the same directory of dupRemove.pl. However any input and output directory path can be passed to dear
+* If the destination of the archive is within the folder to compress the archive will be created and then moved into the desired folder.
 * There must be enough room on the disk to make a complete copy of the input folder and the archive
 * The output location of the archive can be within the input directory
 * The possibility of an MD5 clash can occur, but it is extremely low (unless specially crafted) this means a false duplicate may be detected
