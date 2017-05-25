@@ -94,12 +94,15 @@ if [ -f ${METADATA} ]; then
     if [ $1 == "-c" ]; then
         echo "Coping duplicates"
         while read line; do
-            cp ${line}
+            EXEC="cp ${line}"
+            eval ${EXEC} # use eval so that spaces work out
         done < ${METADATA}
     elif [ $1 == "-l" ]; then
         echo "Creating symlinks for duplicates"
         while read line; do
-            ln -s ${line}
+            # symlink with relative paths
+            EXEC="ln -rs ${line}"
+            eval ${EXEC} # use eval so that spaces work out
         done < ${METADATA}
     fi
 

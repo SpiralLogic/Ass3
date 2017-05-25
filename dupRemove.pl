@@ -60,7 +60,14 @@ sub checkFile {
     if (!exists($md5s{$md5})) {
         $md5s{$md5} = $filename;
     } else {
-        my $line =  $md5s{$md5} . " " . $filename . "\n";
+        # Bash is stupid and needs double escaping for spaces to work
+        my $origfile = $md5s{$md5};
+        $origfile =~ s/ /\\\\ /g;
+
+        my $dupfile = $filename;
+        $dupfile =~  s/ /\\\\ /g;
+
+        my $line =  $origfile . " " . $dupfile . "\n";
         unlink($filename);
         print $metadata_fh $line;
     }

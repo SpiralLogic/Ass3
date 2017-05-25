@@ -155,7 +155,7 @@ rm ./dupRemove.pl
 echo "Archiving ${INDIR}"
 
 # Place compressed file one directory up so that it isn't included in the archive
-tar ${COMPRESS_SWITCH} -cf ../${OUTFILE}${EXTENSION} .
+tar ${COMPRESS_SWITCH} -cvf ../${OUTFILE}${EXTENSION} .
 
 # Make sure compression succeeded
 if [ $? -ne 0 ]; then
