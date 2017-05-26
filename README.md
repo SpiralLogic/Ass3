@@ -15,8 +15,8 @@ This following set of tools written in bash and perl that create a deduplicated 
 To try for yourself :
 
 <pre>
-./dear -g <archive-name> <directory>
-./undear -c <archive-name>.tar.gz
+./dear -g archive test
+./undear -c archive.tar.gz
 </pre>
 
 ### INSTALLING:
