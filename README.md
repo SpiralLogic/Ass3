@@ -35,7 +35,7 @@ The second is ncompress (install shown for ubuntu):
 
 #### To archive a folder
 
-<code>./dear <compression method> <archive name> <directory></code>
+<code>./dear [compression method] [archive name] [directory]</code>
 
 Compression Options are<br>
 <code>-g</code> gzip compression<br>
@@ -47,7 +47,7 @@ Or no switch to just create a tar file.
 ## Undear:
 
 An archive can be uncompressed:
-<code>./undear <duplicate method> <archive name></code>
+<code>./undear [duplicate method] [archive name]</code>
 
 Duplicate Handling options are<br>
 <code>-c</code> restore the duplicate<br>
@@ -78,5 +78,4 @@ Dedupliation happens in the following way
 * dear must be executed from the same directory of dupRemove.pl. However any input and output directory path can be passed to dear
 * If the destination of the archive is within the folder to compress the archive will be created and then moved into the desired folder.
 * There must be enough room on the disk to make a complete copy of the input folder and the archive
-* The output location of the archive can be within the input directory
 * The possibility of an MD5 clash can occur, but it is extremely low (unless specially crafted) this means a false duplicate may be detected
