@@ -131,7 +131,7 @@ mkdir -p ${TMPDIR}
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Copy folder into tmp directory for removing duplicates and archiving
-cp -arf ${INDIR} ${TMPDIR}
+cp -af ${INDIR} ${TMPDIR}
 
 if [ $? -ne 0 ]; then
     echo "Couldn't copy files to temporary directory"
